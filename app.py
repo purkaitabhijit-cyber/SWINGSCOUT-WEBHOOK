@@ -129,8 +129,17 @@ def webhook():
         prices = prices_str.split(",")
         sent   = 0
 
+        # Test webhook — confirmation পাঠাও
+        if stocks and stocks[0].upper().startswith("SYMBOL"):
+            tg(f"✅ <b>SwingScout Pro Connected!</b>\n\n"
+               f"🔗 Webhook working perfectly.\n"
+               f"📡 Scanner: {scan_name}\n"
+               f"🕐 {triggered_at}\n\n"
+               f"এখন real stocks match হলে signal আসবে। 🎯")
+            return jsonify({"status":"ok","test":True})
+
         for i, sym in enumerate(stocks):
-            if not sym or sym.upper().startswith("SYMBOL"):
+            if not sym:
                 continue
 
             key = f"{today()}_{sym}_{scan_name}"
